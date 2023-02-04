@@ -21,14 +21,14 @@ enum OnbordingType: CaseIterable {
     var title: String {
         switch self {
         case .ive:
-            return "ive"
+            return "Build a Better Planet"
         }
     }
     
     var description: String {
         switch self {
         case .ive:
-            return "Ivy"
+            return "by Tracking your Everyday Eco-Friendly Habits."
         }
     }
 }
