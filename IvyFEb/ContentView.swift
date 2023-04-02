@@ -14,8 +14,7 @@ struct ContentView: View {
             VStack {
                 HStack{
                     Spacer()
-                    
-                    NavigationLink(destination: ProfileView(), label: {
+                    NavigationLink(destination: ProfileView(coreDM: CoreDataManager()), label: {
                         Text ("Progress")
                     })
                     .padding(.horizontal)
@@ -28,7 +27,8 @@ struct ContentView: View {
                     .padding(.vertical)
                 
                 grids()
-            }.padding(.bottom, 78)
+            }
+            .padding(.bottom, 78)
             
         }
     }

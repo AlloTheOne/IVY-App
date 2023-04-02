@@ -8,17 +8,19 @@
 import SwiftUI
 import CloudKit
 struct ProfileView: View {
+    let coreDM: CoreDataManager
+    @State private var habitName: String = ""
+    @State private var habits: [Habit] = [Habit]()
     @State private var GoToSting = false
     @State private var selectedFilter: ProgressFilterViewModel = .points
     @State var corentUser = ""
+    var n = 80
     @Namespace var animation
     @State var images = ["saveEarth", "energySaving", "ecoWater", "001", "002", "003"]
     @State var points  = [[50,100], [20,100], [70,100], [90,100]]
-    //    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    //    @AppStorage("userId") var userId: String = ""
-    //    private var isSignedIn: Bool {
-    //        !userId.isEmpty
-    //    }
+    @State var points2  = [["n",100], [20,100], [70,100], [90,100]]
+//    @State var pointsArray: [[String, Int16]] = [["", 0]]
+    @State var pointsArray: [[Int]] = []
     
     var body: some View {
         
@@ -34,37 +36,14 @@ struct ProfileView: View {
             
         }
     }
-    //  View Model
-    //     func fetchUser(){
-    //        let container = CKContainer(identifier: "iCloud.com.thedreamers.ivy")
-    //        let predicateAll = NSPredicate(value: true)
-    //        let predicateJumana = NSPredicate(format: "name ==%@", "Jumana Khaled")
-    //        let query = CKQuery(recordType: "User", predicate: predicateAll)
-    //
-    //        let operations = CKQueryOperation(query: query)
-    //        operations.recordMatchedBlock = {  recordId, result in
-    ////            case .success( let records):
-    ////            let learner = Learner(record: records)
-    ////            self.learners.append(learner)
-    //            switch result {
-    //            case .success( let records):
-    //                let user = User(record: records)
-    //                self.corentUser =  "\(user.firstName) \(user.lastName)"
-    //                print("record: records")
-    //            case .failure( let error):
-    //                print(error.localizedDescription)
-    //                print("let error")
-    //            }
-    //        }
-    //        container.publicCloudDatabase.add(operations)
-    //    }
+    
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             VStack{
-                ProfileView()
+                ProfileView(coreDM: CoreDataManager())
                     .navigationTitle("Progress")
                     .navigationBarTitleDisplayMode(.inline)
             }

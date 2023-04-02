@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59402D4B29D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 59402D4929D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodeld */; };
+		59402D4D29D50DDB0092E4E1 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59402D4C29D50DDB0092E4E1 /* CoreDataManager.swift */; };
 		ADF251A8298D654A00781976 /* IvyFEbApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF251A7298D654A00781976 /* IvyFEbApp.swift */; };
 		ADF251AA298D654A00781976 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF251A9298D654A00781976 /* ContentView.swift */; };
 		ADF251AC298D654B00781976 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADF251AB298D654B00781976 /* Assets.xcassets */; };
@@ -26,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		59402D4A29D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IvyCoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		59402D4C29D50DDB0092E4E1 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		ADF251A4298D654A00781976 /* IvyFEb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IvyFEb.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADF251A7298D654A00781976 /* IvyFEbApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IvyFEbApp.swift; sourceTree = "<group>"; };
 		ADF251A9298D654A00781976 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 		ADF2519B298D654A00781976 = {
 			isa = PBXGroup;
 			children = (
+				59402D4C29D50DDB0092E4E1 /* CoreDataManager.swift */,
+				59402D4929D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodeld */,
 				ADF251A6298D654A00781976 /* IvyFEb */,
 				ADF251A5298D654A00781976 /* Products */,
 			);
@@ -190,6 +196,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADF251BC298D69AE00781976 /* ProgressFilterViewModel.swift in Sources */,
+				59402D4B29D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodeld in Sources */,
 				ADF251C8298E8F8400781976 /* Recycling.swift in Sources */,
 				ADF251CD298E902A00781976 /* Sustainability.swift in Sources */,
 				ADF251AA298D654A00781976 /* ContentView.swift in Sources */,
@@ -202,6 +209,7 @@
 				ADF251C5298DB67300781976 /* LoadingView.swift in Sources */,
 				ADF251A8298D654A00781976 /* IvyFEbApp.swift in Sources */,
 				ADF251C4298DB67300781976 /* OnbordingView.swift in Sources */,
+				59402D4D29D50DDB0092E4E1 /* CoreDataManager.swift in Sources */,
 				ADF251CF298E905200781976 /* Plastic Reduction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,7 +267,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -313,7 +321,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -403,6 +411,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		59402D4929D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				59402D4A29D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodel */,
+			);
+			currentVersion = 59402D4A29D50D2F0092E4E1 /* IvyCoreDataModel.xcdatamodel */;
+			path = IvyCoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = ADF2519C298D654A00781976 /* Project object */;
 }
