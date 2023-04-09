@@ -12,26 +12,28 @@ import SwiftUI
 class CoreDataManager: ObservableObject {
     let container: NSPersistentContainer
     
-    @Published var habit: [Habit] = []
+    @Published var habits: [HabitEntity] = []
     
     init() {
-        container =  NSPersistentContainer(name: "IvyCoreDataModel")
+        container =  NSPersistentContainer(name: "HabitContainer")
         container.loadPersistentStores { (description, error) in
             if let error = error {
                 print("error loading data \(error)")
             }
         }
         // call the function that fetches your core data
-        fetchHabit()
+//        fetchHabit()
     }
     
     
     func fetchHabit() {
         // send a request to fetch data
-        let request = NSFetchRequest<Habit>(entityName: "Habit")
+        let request = NSFetchRequest<HabitEntity>(entityName: "HabitEntity")
+        print("heyyy")
         // fetching
         do {
-           habit = try container.viewContext.fetch(request)
+            habits = try container.viewContext.fetch(request)
+            print("hi")
         } catch let error {
             print("error fetching \(error)")
         }
@@ -39,9 +41,9 @@ class CoreDataManager: ObservableObject {
     
     
     
-    func fetchByname(name: String) -> Habit {
+    func fetchByname(name: String) -> HabitEntity {
         let fetchRequest: NSFetchRequest<NSFetchRequestResult>
-        fetchRequest = Habit.fetchRequest()
+        fetchRequest = HabitEntity.fetchRequest()
         
         fetchRequest.fetchLimit = 1
         fetchRequest.predicate = NSPredicate(
@@ -52,12 +54,12 @@ class CoreDataManager: ObservableObject {
         
         let objects =   try! context.fetch(fetchRequest).first
         print("objects : \( String(describing: objects))")
-        return objects! as! Habit
+        return objects! as! HabitEntity
     }
     
     func isItOnCoredata(name: String) -> Bool{
         let fetchRequest: NSFetchRequest<NSFetchRequestResult>
-        fetchRequest = Habit.fetchRequest()
+        fetchRequest = HabitEntity.fetchRequest()
         // Configure a fetch request to fetch at most 1 result
         fetchRequest.fetchLimit = 1
         fetchRequest.predicate = NSPredicate(
@@ -78,7 +80,7 @@ class CoreDataManager: ObservableObject {
         withAnimation {
            
             // creating new item
-            let habit = Habit(context: container.viewContext)
+            let habit = HabitEntity(context: container.viewContext)
             habit.name = name
             habit.points = points
             
@@ -86,8 +88,8 @@ class CoreDataManager: ObservableObject {
         }
     }
     
-    func getAllHabits() ->[Habit]{
-        let fetchRequest: NSFetchRequest<Habit> = Habit.fetchRequest()
+    func getAllHabits() ->[HabitEntity]{
+        let fetchRequest: NSFetchRequest<HabitEntity> = HabitEntity.fetchRequest()
         do{
             return try container.viewContext.fetch(fetchRequest)
         }catch{
@@ -100,7 +102,7 @@ class CoreDataManager: ObservableObject {
     func saveItems() {
        do {
            try container.viewContext.save()
-           fetchHabit()
+//           fetchHabit()
        } catch {
            print("error saving")
        }

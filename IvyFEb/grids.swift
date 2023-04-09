@@ -71,7 +71,7 @@ struct grids: View {
             
         }
     }
-    let habit = Habit()
+    let habit = HabitEntity()
     
     var body: some View {
         ZStack{
@@ -137,18 +137,29 @@ struct grids: View {
 }
 
 struct DetailView: View {
-    let coreDM: CoreDataManager
+    @StateObject var coreDM: CoreDataManager
     @State private var habitName: String = ""
-    @State private var habits: [Habit] = [Habit]()
+    @State private var habits: [HabitEntity] = [HabitEntity]()
     private func populateHabits(){
         habits = coreDM.getAllHabits()
     }
+    @State var updatedHabit = ""
     
+    @State var updatedPoints: Int16 = 0
     let currentHabitName: String
     let currentHabitDetails: String
-    let habit: Habit
+    let habit: HabitEntity
     //for update
-    
+    func habitList() {
+        for i in habits {
+            if (i.name == currentHabitName) {
+                print(i.name ?? "hii")
+                updatedHabit = i.name ?? "hii"
+                print("pointttt \(i.points)" )
+                updatedPoints = i.points
+            }
+        }
+    }
     var body: some View {
         NavigationView{
             VStack{
@@ -164,27 +175,40 @@ struct DetailView: View {
                     // update habit's points
                     if(coreDM.isItOnCoredata(name: currentHabitName) ){
                         let currentHabit = coreDM.fetchByname(name: currentHabitName)
-                        currentHabit.points = currentHabit.points + 5
-                        coreDM.saveItems()
-                        populateHabits()
+                        if (currentHabit.points < 100) {
+                            currentHabit.points = currentHabit.points + 5
+                            
+                            coreDM.saveItems()
+                            populateHabits()
+                        } else {
+                            print("reached limit")
+                        }
                     }else{
                         //create new Habit
-                        populateHabits()
+//                        populateHabits()
                         coreDM.addItem(name: currentHabitName, points: 5)
                         populateHabits()
                     }
+                    habitList()
                 }
                 Spacer()
-                List(habits, id: \.self){
-                    habit in
-                    Text(habit.name ?? "")
-                    Text("habit.points : \(habit.points)")
+                VStack {
+                    
+                    Text(updatedHabit)
+                    Text("\(updatedPoints)")
                 }
+//                List(habits, id: \.self){
+//                    habit in
+//                    Text(habit.name ?? "")
+//                    Text("habit.points : \(habit.points)")
+//                }
+//                .listStyle(.plain)
             }.padding()
                 .navigationTitle("Habit")
             
                 .onAppear(perform: {
                    populateHabits()
+                    habitList()
                 })
 
         }
