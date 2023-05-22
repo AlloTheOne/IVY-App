@@ -53,7 +53,6 @@ class CoreDataManager: ObservableObject {
         let context = container.viewContext
         
         let objects =   try! context.fetch(fetchRequest).first
-        print("objects : \( String(describing: objects))")
         return objects! as! HabitEntity
     }
     
@@ -71,7 +70,6 @@ class CoreDataManager: ObservableObject {
         // Perform the fetch request to get the objects
         // matching the predicate
         let objects =   try! context.fetch(fetchRequest).first
-        print("objects : \( String(describing: objects))")
         return (objects != nil)
     }
     

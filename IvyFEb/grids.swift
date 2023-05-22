@@ -9,30 +9,14 @@ import SwiftUI
 
 struct grids: View {
     
-    @State var gridLayout: [GridItem] = [ GridItem() ]
-    @State private var showPopup: Bool = false
-    @State private var showingAlert1 = false
-    @State private var showPopover: Bool = false
-    @State private var showingAlert2 = false
-    
+
     private let adaptiveColumns = [
         GridItem(.adaptive(minimum: 150))
         
     ]
-    let columns: [GridItem] = [
-        
-        GridItem(spacing: 100, alignment: .center),
-        GridItem(spacing: 100, alignment: .center),
-        GridItem(spacing: 100, alignment: .center),
-        GridItem(spacing: 100, alignment: .center),
-        GridItem(spacing: 100, alignment: .center),
-        GridItem(spacing: 100, alignment: .center),
-    ]
-    
-    let array = ["Volunteering", "Plastic Reduction" , "Sustainable" , "Recycling"  , "Planting" , "Safe Energy"]
-    
+
     @State var entries = [1, 2, 3, 4, 5, 6]
-    @State var currentSelection: Int? = nil
+
 
     func getHabitName(num:Int) -> String{
         let liveAlbums = num
@@ -99,7 +83,6 @@ struct grids: View {
                                             .font(.subheadline)
                                             .padding(.bottom, 8)
                                         
-                                        
                                     }
                                     
                                     ZStack{
@@ -138,7 +121,7 @@ struct grids: View {
 
 struct DetailView: View {
     @StateObject var coreDM: CoreDataManager
-    @State private var habitName: String = ""
+//    @State private var habitName: String = ""
     @State private var habits: [HabitEntity] = [HabitEntity]()
     private func populateHabits(){
         habits = coreDM.getAllHabits()
@@ -153,9 +136,7 @@ struct DetailView: View {
     func habitList() {
         for i in habits {
             if (i.name == currentHabitName) {
-                print(i.name ?? "hii")
                 updatedHabit = i.name ?? "hii"
-                print("pointttt \(i.points)" )
                 updatedPoints = i.points
             }
         }
@@ -175,13 +156,12 @@ struct DetailView: View {
                     // update habit's points
                     if(coreDM.isItOnCoredata(name: currentHabitName) ){
                         let currentHabit = coreDM.fetchByname(name: currentHabitName)
-                        if (currentHabit.points < 100) {
+                        // if less than 500
+                        if currentHabit.points < 500 {
                             currentHabit.points = currentHabit.points + 5
                             
                             coreDM.saveItems()
                             populateHabits()
-                        } else {
-                            print("reached limit")
                         }
                     }else{
                         //create new Habit
@@ -191,18 +171,34 @@ struct DetailView: View {
                     }
                     habitList()
                 }
+                Button("No"){
+                    // update habit's points
+                    if(coreDM.isItOnCoredata(name: currentHabitName) ){
+                        let currentHabit = coreDM.fetchByname(name: currentHabitName)
+                        // if less than 500
+                        if currentHabit.points > 0 {
+                            currentHabit.points = currentHabit.points - 5
+                            
+                            coreDM.saveItems()
+                            populateHabits()
+                        }
+                    }else{
+                        //create new Habit
+//                        populateHabits()
+//                        coreDM.addItem(name: currentHabitName, points: 5)
+//                        populateHabits()
+                    }
+                    habitList()
+                }
                 Spacer()
                 VStack {
                     
                     Text(updatedHabit)
-                    Text("\(updatedPoints)")
+                    // if there any
+                    if !updatedHabit.isEmpty {
+                        Text("\(updatedPoints)")
+                    }
                 }
-//                List(habits, id: \.self){
-//                    habit in
-//                    Text(habit.name ?? "")
-//                    Text("habit.points : \(habit.points)")
-//                }
-//                .listStyle(.plain)
             }.padding()
                 .navigationTitle("Habit")
             
@@ -215,59 +211,4 @@ struct DetailView: View {
     }
 }
 
-public struct LazyView<Content: View>: View {
-    private let build: () -> Content
-    public init(_ build: @autoclosure @escaping () -> Content) {
-        self.build = build
-    }
-    public var body: Content {
-        build()
-    }
-}
 
-struct EmptyNavigationLink<Destination: View>: View {
-    let lazyDestination: LazyView<Destination>
-    let isActive: Binding<Bool>
-    
-    init<T>(
-        @ViewBuilder destination: @escaping (T) -> Destination,
-        selection: Binding<T?>
-    )  {
-        lazyDestination = LazyView(destination(selection.wrappedValue!))
-        isActive = .init(
-            get: { selection.wrappedValue != nil },
-            set: { isActive in
-                if !isActive {
-                    selection.wrappedValue = nil
-                }
-            }
-        )
-    }
-    
-    var body: some View {
-        NavigationLink(
-            destination: lazyDestination,
-            isActive: isActive,
-            label: { EmptyView() }
-        )
-    }
-}
-
-struct EntrieButton:View{
-@State var showSheet = false
-var entry:String
-
-var body: some View {
-Button(action:{self.showSheet = true}){
-    Text(entry)
-}.sheet(isPresented: $showSheet){
-    
-        VStack {
-            Text("My Sheet number \(entry)")
-           
-        }
-    
-    
-}
-}
-}

@@ -9,21 +9,15 @@ import SwiftUI
 import CloudKit
 struct ProfileView: View {
     @StateObject var coreDM: CoreDataManager
-    @State private var habitName: String = ""
     @State private var habits: [HabitEntity] = [HabitEntity]()
     @State private var GoToSting = false
     @State private var selectedFilter: ProgressFilterViewModel = .points
-    @State var corentUser = ""
-    var n = 80
     private func populateHabits(){
         habits = coreDM.getAllHabits()
     }
     @Namespace var animation
-    @State var entries: [Int] = []
 
-    @State var images = ["saveEarth", "energySaving", "ecoWater", "001", "002", "003"]
-    let array = ["Volunteering", "Plastic Reduction" , "Sustainable" , "Recycling"  , "Planting" , "Safe Energy"]
-    func getImage(num:String) -> String{
+    func getImage(num:String) -> String {
         let liveAlbums = num
         switch liveAlbums {
         case "Volunteering":
@@ -41,69 +35,79 @@ struct ProfileView: View {
             
         }
     }
-    @State var points  = [[50,100], [20,100], [70,100], [90,100]]
-    @State var points2  = [["n",100], [20,100], [70,100], [90,100]]
-//    @State var pointsArray: [[String, Int16]] = [["", 0]]
+
     @State var pointsArray: [[Int]] = []
-    @State var doublePointsArray: [[Int]] = []
     @State var HabitArray: [String] = []
     @State var currentHabitName: String = ""
     @State var pointsCounter = 0
     @State var imagessCounter = -1
     @State var reachedHundred: [String] = []
-    @State var uniqueHabitArray = []
-    @State var uniquePointsArray = []
+    @State var levelTwo: [String] = []
+    @State var levelThree: [String] = []
+    @State var levelFour: [String] = []
+    @State var levelFive: [String] = []
+    
+    
     //func here and call it on appear
     func pointsList() {
         pointsArray = []
         HabitArray = []
         for i in habits {
-           
-//            if (i.name == currentHabitName) {
+            
+            imagessCounter = 0
+            reachedHundred = []
+            levelTwo = []
+            
             currentHabitName = i.name ?? ""
-            var intPoints = Int(i.points)
-            var stringHabit = String(i.name ?? "")
-//            let unique = pointsArray(Set(arrayLiteral: intPoints))
+            let intPoints = Int(i.points)
+            let stringHabit = String(i.name ?? "")
+
             
             pointsArray += [[intPoints, 100]]
             HabitArray += [stringHabit]
-            uniqueHabitArray = Array(Set(HabitArray))
-            uniquePointsArray = Array(Set(pointsArray))
-            print(uniqueHabitArray, uniquePointsArray)
-            print(HabitArray, pointsArray)
-                print("\(Double(pointsArray[0][0]))")
-            if i.points == 100 {
-                reachedHundred += [stringHabit]
-                doublePointsArray += [[intPoints, 200]]
-              
-//                pointsArray[imagessCounter][1] = 200
-                print(reachedHundred)
-                print("under me line 82")
-                print(pointsArray)
-                print("under me line 84")
-                print(doublePointsArray)
-                for _ in reachedHundred {
-                    imagessCounter += 1
-                    print(imagessCounter)
-                    print(i.id)
-                }
+            
+           
+            for index in HabitArray.indices {
+                let firstIndex = pointsArray[index][0]
+                let imageApoveTwoHundred = HabitArray[index]
+                
+                    if firstIndex >= 100 && firstIndex <= 199{
+                        reachedHundred += [imageApoveTwoHundred] //1
+                        imagessCounter += 1
+                        pointsArray[index][1] = 200
+                    } else if firstIndex >= 200 && firstIndex <= 299{
+                        reachedHundred += [imageApoveTwoHundred]
+                        levelTwo += [imageApoveTwoHundred] //2
+                        pointsArray[index][1] = 300
+                    } else if firstIndex >= 300 && firstIndex <= 399{
+                        reachedHundred += [imageApoveTwoHundred]
+                        levelTwo += [imageApoveTwoHundred]
+                        levelThree += [imageApoveTwoHundred] //3
+                        pointsArray[index][1] = 400
+                    } else if firstIndex >= 400 && firstIndex <= 499{
+                        reachedHundred += [imageApoveTwoHundred]
+                        levelTwo += [imageApoveTwoHundred]
+                        levelThree += [imageApoveTwoHundred]
+                        levelFour += [imageApoveTwoHundred] //4
+                        pointsArray[index][1] = 500
+                    } else if firstIndex == 500 {
+                        reachedHundred += [imageApoveTwoHundred]
+                        levelTwo += [imageApoveTwoHundred]
+                        levelThree += [imageApoveTwoHundred]
+                        levelFour += [imageApoveTwoHundred]
+                        levelFive += [imageApoveTwoHundred] //5
+                        pointsArray[index][1] = 500
+                    }
             }
-//            print(currentHabitName)
-            print("\(Double(pointsArray[0][0]))")
-            print(pointsArray)
-//            }
+
         }
     }
     func countTotal() {
         pointsCounter = 0
         for i in habits {
-           
-                var intPoints = Int(i.points)
-                pointsCounter += intPoints
-                print(pointsCounter)
-                print("apove me counter")
-                
+            let intPoints = Int(i.points)
             
+            pointsCounter += intPoints
         }
     }
     var body: some View {
@@ -183,7 +187,7 @@ extension ProfileView{
             .padding(.horizontal, 24)
             ScrollView{
                 LazyVStack{
-                    ForEach(uniqueHabitArray.indices, id: \.self){ index in
+                    ForEach(HabitArray.indices, id: \.self){ index in
                         VStack {
                             HStack{
                                 // here should be the name of the habit
@@ -202,6 +206,7 @@ extension ProfileView{
                             .padding(.horizontal)
                             // here is the progress view
                             // an issue occured it could take more than 100 !! maybe an if statement will fix it
+                            // try to put the if statement here if needed
                             ProgressView( value: Double(pointsArray[index][0]),
                                           total: Double(pointsArray[index][1]))
                             .tint((Color("ourgreen")))
@@ -243,9 +248,51 @@ extension ProfileView{
                         .resizable()
                         .frame(width: 150, height: 150)
                         .padding()
+                    
                 }
             })
-        }                        .padding(.horizontal)
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(),spacing: 4), count: 2), content: {
+                ForEach(levelTwo, id: \.self){ index1 in
+                    Image("\(getImage(num: index1))")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                        .padding()
+                   
+                }
+                
+            })
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(),spacing: 4), count: 2), content: {
+            ForEach(levelThree, id: \.self){ index1 in
+                Image("\(getImage(num: index1))")
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .padding()
+               
+            }
+            
+        })
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(),spacing: 4), count: 2), content: {
+            ForEach(levelFour, id: \.self){ index1 in
+                Image("\(getImage(num: index1))")
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .padding()
+               
+            }
+            
+        })
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(),spacing: 4), count: 2), content: {
+            ForEach(levelFive, id: \.self){ index1 in
+                Image("\(getImage(num: index1))")
+                    .resizable()
+                    .frame(width: 150, height: 150)
+                    .padding()
+               
+            }
+            
+        })
+        }
+        .padding(.horizontal)
         
     }
 }
